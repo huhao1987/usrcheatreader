@@ -1,9 +1,14 @@
 package hh.game.usrcheat_android.usrcheat
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
+import android.widget.Toast
+import androidx.annotation.WorkerThread
 import hh.game.usrcheatreader.*
 import java.io.ByteArrayInputStream
+import java.io.IOException
+import java.io.InputStream
 import java.lang.Exception
 import kotlin.collections.ArrayList
 
@@ -20,7 +25,6 @@ class UsrCheatUtils() {
         //The end address of title(Should be the limitation)
         private val titleendaddress = 0x4a
         private var cheatdbtitle: String? = null
-        private var file: String? = null
         private var header: ByteArray? = null
         private var wholedatabase: ByteArray? = null
 
@@ -28,8 +32,7 @@ class UsrCheatUtils() {
         /**
          * Init the class
          */
-        fun init(context: Context, file: String) {
-            this.file = file
+        fun initwithAsset(context: Context, file: String) {
             context.assets.open(file).apply {
                 header = ByteArray(headersize)
                 read(header)
@@ -38,7 +41,27 @@ class UsrCheatUtils() {
                 close()
             }
         }
+        fun init(context: Context,uri: Uri?){
+            try {
+                uri?.openInputStream(context)?.apply {
+                    wholedatabase = readBytes()
+                    header= wholedatabase?.copyOfRange(0, headersize)
+                    close()
+                }
+            }
+            catch (e:Exception){
+                Toast.makeText(context,"Error happened",Toast.LENGTH_SHORT).show()
+            }
+        }
 
+        @WorkerThread
+        fun Uri.openInputStream(context: Context): InputStream? {
+            return try {
+                context.contentResolver.openInputStream(this)
+            } catch (e: IOException) {
+                null
+            }
+        }
         @Throws(Exception::class)
         fun getEndPointer(): Int {
             return wholedatabase!!.size
@@ -205,7 +228,6 @@ class UsrCheatUtils() {
             templist = templist.drop(2.align()).toList()
             gameCode.codes = ArrayList<ArrayList<String>>()
             var temponecheat = ArrayList<String>()
-            Log.d("thenumblock:::", gameCode.numOfCodes.toString())
             var temp = templist.subList(0, gameCode.numOfCodes * 4).chunked(4)
             templist = templist.drop((gameCode.numOfCodes * 4)).toList()
             temp.forEachIndexed { index, list ->

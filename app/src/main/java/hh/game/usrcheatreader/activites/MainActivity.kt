@@ -1,15 +1,18 @@
-package hh.game.usrcheatreader
+package hh.game.usrcheatreader.activites
 
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hh.game.usrcheat_android.usrcheat.Gamedetail
 import hh.game.usrcheat_android.usrcheat.UsrCheatUtils
+import hh.game.usrcheatreader.R
+import hh.game.usrcheatreader.adapters.GameTitleListAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -20,18 +23,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val file = "usrcheat.dat"
         UsrCheatUtils.init(this, file)
-
-        var cheatlist = findViewById<RecyclerView>(R.id.cheatlist)
+        findViewById<TextView>(R.id.dbname).text=UsrCheatUtils.getCheatDBname()
+        var gametitlelist = findViewById<RecyclerView>(R.id.gametitlelist)
         GlobalScope.launch {
             var list = UsrCheatUtils.gettestGames()
-            var adapter = CheatListAdapter(list, object : CheatListAdapter.onClickListener {
+            var adapter = GameTitleListAdapter(list, object : GameTitleListAdapter.onClickListener {
                 override fun onclick(
                     view: View,
                     gamedetail: Gamedetail,
                     position: Int,
                     nextpointer: Int
                 ) {
-                    startActivity(Intent(this@MainActivity,CheatDetailActivity::class.java).also {
+                    startActivity(Intent(this@MainActivity, CheatDetailActivity::class.java).also {
                         it.putExtra("gamedetail",gamedetail)
                         it.putExtra("nextpointer",nextpointer)
                     })
@@ -40,8 +43,8 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 var llm = LinearLayoutManager(this@MainActivity)
                 llm!!.orientation = RecyclerView.VERTICAL
-                cheatlist.layoutManager = llm
-                cheatlist.adapter = adapter
+                gametitlelist.layoutManager = llm
+                gametitlelist.adapter = adapter
             }
         }
 

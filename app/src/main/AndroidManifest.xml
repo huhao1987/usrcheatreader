@@ -11,10 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.usrcheatreader">
         <activity
-            android:name=".CheatDetailActivity"
+            android:name=".activites.CheatDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activites.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package hh.game.usrcheat_android
+package hh.game.usrcheatreader
 
 import org.junit.Test
 

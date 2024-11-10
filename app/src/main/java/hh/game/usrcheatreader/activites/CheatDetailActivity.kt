@@ -42,7 +42,7 @@ class CheatDetailActivity : AppCompatActivity() {
 
             var cheatlist = findViewById<RecyclerView>(R.id.cheatlist)
             GlobalScope.launch {
-                var list = UsrCheatUtils.getCheatCodes(gamedetail, nextpointer)
+                var list = UsrCheatUtils.getCheatCodes(this@CheatDetailActivity, gamedetail, nextpointer)
                 var adapter = GameFolderAdapter(this@CheatDetailActivity,list, object : GameFolderAdapter.onClickListener {
                     override fun onclick(
                         view: View,

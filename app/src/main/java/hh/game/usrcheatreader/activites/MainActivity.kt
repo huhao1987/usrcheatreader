@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         var gametitlelist = findViewById<RecyclerView>(R.id.gametitlelist)
         GlobalScope.launch {
             try {
-                var list = UsrCheatUtils.gettestGames()
+                var list = UsrCheatUtils.getGametitles()
                 var adapter =
                     GameTitleListAdapter(list, object : GameTitleListAdapter.onClickListener {
                         override fun onclick(

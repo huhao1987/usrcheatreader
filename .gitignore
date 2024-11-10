@@ -13,7 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-
-/.idea/
-/app/release/
-/app/src/main/assets/
+.idea/
